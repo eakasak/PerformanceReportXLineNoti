@@ -128,10 +128,5 @@ namespace PerformanceReportXLineNoti
             public List<string> PureArray { get; set; }
             
         }
-
-        // 
-    
-
-
     }
 }

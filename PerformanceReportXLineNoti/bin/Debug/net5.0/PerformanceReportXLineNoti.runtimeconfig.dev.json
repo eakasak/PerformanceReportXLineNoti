@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\eakasak.pib\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\eakasak.pib\\.nuget\\packages"
+    ]
+  }
+}

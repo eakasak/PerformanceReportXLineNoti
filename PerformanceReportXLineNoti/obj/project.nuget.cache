@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "fvT9aL8ZoWV8dYyR4A43+5l/kg56CWzThBUiPlQ0grY/dSxogOBbCV4sLkCdT49hNAl/p+z39nIJYUGcU1TUuw==",
+  "success": true,
+  "projectFilePath": "D:\\Git\\PerformanceReportXLineNoti\\PerformanceReportXLineNoti\\PerformanceReportXLineNoti.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\eakasak.pib\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\eakasak.pib\\.nuget\\packages\\restsharp\\107.3.0\\restsharp.107.3.0.nupkg.sha512",
+    "C:\\Users\\eakasak.pib\\.nuget\\packages\\system.text.json\\5.0.0\\system.text.json.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

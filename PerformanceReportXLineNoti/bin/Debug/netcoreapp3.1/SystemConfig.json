@@ -1,0 +1,9 @@
+{
+  "BeginKickOff": 15,
+  "EveryBeginKickOff": 5,
+  "OnKickOff": 15,
+  "AfterMatchStop": 5,
+  "IsNotifyLine": false,
+  "IsNotifyLineWithImg": true,
+  "PureArray": [ "D2P-AAAVMSTOR01", "D2P-CLMVMSCTL01", "D2P-CLMVMSCTL02", "D2P-CLMVMSCTL03"]
+}

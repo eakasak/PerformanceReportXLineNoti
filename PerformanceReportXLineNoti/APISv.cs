@@ -9,9 +9,7 @@ namespace PerformanceReportXLineNoti
 {
     public class APISv
     {
-        public string _Authorization = "Bearer whVvZh1oelDBO1TpGlPw0rhyorbZZpehmFIH7EDO5I6";
-
-        public object NotiLine(string pMessage)
+          public object NotiLine(string pMessage, string pAuthorization = "whVvZh1oelDBO1TpGlPw0rhyorbZZpehmFIH7EDO5I6")
         {
             //  client.Timeout = -1;
 
@@ -19,14 +17,14 @@ namespace PerformanceReportXLineNoti
             request.RequestFormat = DataFormat.Json;
             request.Method = Method.Post;
             var client = new RestClient("https://notify-api.line.me/api/notify?message=" + pMessage);
-            request.AddHeader("Authorization", _Authorization);
+            request.AddHeader("Authorization", "Bearer " + pAuthorization);
             request.AddHeader("Accept", "application/json");
             //request.AddFile("imageFile", "D://Image.png");
             var response = client.ExecuteAsync(request).Result;
             //Console.WriteLine(response.Content);
             return response.Content;
         }
-        public object NotiLine(string pMessage, string imageFile)
+        public object NotiLine(string pMessage, string imageFile, string pAuthorization = "whVvZh1oelDBO1TpGlPw0rhyorbZZpehmFIH7EDO5I6")
         {
             //  client.Timeout = -1;
 
@@ -34,7 +32,7 @@ namespace PerformanceReportXLineNoti
             request.RequestFormat = DataFormat.Json;
             request.Method = Method.Post;
             var client = new RestClient("https://notify-api.line.me/api/notify?message=" + pMessage);
-            request.AddHeader("Authorization", _Authorization);
+            request.AddHeader("Authorization", "Bearer " + pAuthorization);
             request.AddHeader("Accept", "application/json");
             request.AddFile("imageFile", imageFile);
             var response = client.ExecuteAsync(request).Result;

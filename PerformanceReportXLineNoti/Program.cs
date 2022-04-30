@@ -46,7 +46,7 @@ namespace PerformanceReportXLineNoti
 
                 var msg = d + " : " + h + " vs " + a;
                 msg += Environment.NewLine;
-                if (d > curmacth)
+                if (true)
                 {
                     msg += "rp1 : begin ko : " + beginko.ToString();
                     msg += Environment.NewLine;
@@ -109,7 +109,7 @@ namespace PerformanceReportXLineNoti
         {
             DateTime datenow = DateTime.Today;
 
-            //curdate = DateTime.Now.AddHours(31).AddMinutes(20);
+            curdate = DateTime.Now;
             DateTime MacthNow = new DateTime(curdate.Year, curdate.Month, curdate.Day, curdate.Hour, curdate.Minute, 0);
 
             if (MatchDay.Contains(MacthNow))           

@@ -11,7 +11,7 @@ namespace PerformanceReportXLineNoti
     class Program
     {
         static List<string> teams = new List<string>{"Arsenal", "Aston Villa", "Brentford", "Brighton", "Burnley", "Chelsea", "Crystal Palace",
-            "Everton", "Leeds", "Leicester", "Liverpool", "Man City", "Man Utd", "Newcastle", "Norwich City", "Southampton", "Tottenham", "Watford", "West Ham", "Wolves" };
+            "Everton", "Leicester", "Leeds", "Liverpool", "Man City", "Man Utd", "Newcastle", "Norwich City", "Southampton", "Tottenham", "Watford", "West Ham", "Wolves" };
 
         static APISv _APISv = new APISv();
         static SystemConfig _SystemConfig = new SystemConfig();
@@ -32,7 +32,7 @@ namespace PerformanceReportXLineNoti
           
             var rs = _APISv.GetFixtures();
 
-            var rs2 = rs.Where(a => Convert.ToDateTime(a.kickoff_time).Date >= curdate).Take(1).ToList();
+            var rs2 = rs.Where(a => Convert.ToDateTime(a.kickoff_time).Date >= Convert.ToDateTime(curdate).Date).Take(10).ToList();
 
             //var c = Convert.ToDateTime(rs2[0].kickoff_time);
 
@@ -123,8 +123,8 @@ namespace PerformanceReportXLineNoti
                 var Arrays = _APISv.GetArrays();
                 var SelectArrays = Arrays.items.Where(a => _SystemConfig.PureArray.Contains(a.name));
                 Console.WriteLine("Report : " + curdate.ToString() );
-                var Valumes = _APISv.GetVolumes();
-                var SelectValume = Valumes.items;
+                //var Valumes = _APISv.GetVolumes();
+                //var SelectValume = Valumes.items;
                 foreach (var item in SelectArrays)
                 {
                     Console.WriteLine(item.name);

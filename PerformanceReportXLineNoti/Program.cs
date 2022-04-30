@@ -32,7 +32,7 @@ namespace PerformanceReportXLineNoti
           
             var rs = _APISv.GetFixtures();
 
-            var rs2 = rs.Where(a => Convert.ToDateTime(a.kickoff_time).Date >= Convert.ToDateTime(curdate).Date).Take(10).ToList();
+            var rs2 = rs.Where(a => Convert.ToDateTime(a.kickoff_time).Date == Convert.ToDateTime(curdate).Date).ToList();
 
             //var c = Convert.ToDateTime(rs2[0].kickoff_time);
 

@@ -125,15 +125,16 @@ namespace PerformanceReportXLineNoti
                 Console.WriteLine("Report : " + curdate.ToString() );
                 //var Valumes = _APISv.GetVolumes();
                 //var SelectValume = Valumes.items;
+                if (_SystemConfig.IsNotifyLine)
+                {
+                    _APISv.NotiLine("Report : " + curdate.ToString(), _SystemConfig.LineNotiToken);
+                }
                 foreach (var item in SelectArrays)
                 {
                     Console.WriteLine(item.name);
                     Console.WriteLine(item.model);
                     Console.WriteLine(item.version);
-                    if (_SystemConfig.IsNotifyLine)
-                    {
-                        _APISv.NotiLine(item.name, _SystemConfig.LineNotiToken);
-                    }
+                  
                 }
               
                 var MaxTimeMatchDay = MatchDay.OrderByDescending(o => o).FirstOrDefault();

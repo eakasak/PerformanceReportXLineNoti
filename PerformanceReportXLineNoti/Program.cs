@@ -69,6 +69,10 @@ namespace PerformanceReportXLineNoti
                     }
                     curmacth = d;
                 }
+                if(!_SystemConfig.IsDevelop)
+                {
+                     msg = d + " : " + h + " vs " + a;
+                }
                 Console.WriteLine(msg);
 
                 if (_SystemConfig.IsNotifyLine)
@@ -77,9 +81,7 @@ namespace PerformanceReportXLineNoti
                 }
 
             }
-            var ss = _APISv.GetArrays();
-            var x = ss.items.Where(a => _SystemConfig.PureArray.Contains(a.name));
-
+   
             Console.ReadLine();
         }
         private static void LoadConfig()
@@ -106,13 +108,10 @@ namespace PerformanceReportXLineNoti
         private static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             DateTime datenow = DateTime.Today;
-            //DateTime date1 = new DateTime(datenow.Year, datenow.Month, datenow.Day, 6, 0, 0);
-            //DateTime date2 = new DateTime(datenow.Year, datenow.Month, datenow.Day, 3, 45, 0);
 
-            //curdate = DateTime.Now.AddHours(35).AddMinutes(30);
+            //curdate = DateTime.Now.AddHours(31).AddMinutes(20);
             DateTime MacthNow = new DateTime(curdate.Year, curdate.Month, curdate.Day, curdate.Hour, curdate.Minute, 0);
-            //DateTime MacthNow = new DateTime(_TimeNow.Year, _TimeNow.Month, _TimeNow.Day, _TimeNow.Hour, _TimeNow.Minute, 0);
-           
+
             if (MatchDay.Contains(MacthNow))           
             {
                 aTimer.Stop();
@@ -121,7 +120,18 @@ namespace PerformanceReportXLineNoti
                 aTimer.AutoReset = true;
                 aTimer.Enabled = true;
                 aTimer.Start();
-                Console.WriteLine("Report : "+ curdate.ToString());
+                var Arrays = _APISv.GetArrays();
+                var SelectArrays = Arrays.items.Where(a => _SystemConfig.PureArray.Contains(a.name));
+                Console.WriteLine("Report : " + curdate.ToString() );
+                var Valumes = _APISv.GetVolumes();
+                var SelectValume = Valumes.items;
+                foreach (var item in SelectArrays)
+                {
+                    Console.WriteLine(item.name);
+                    Console.WriteLine(item.model);
+                    Console.WriteLine(item.version);
+                }
+              
                 var MaxTimeMatchDay = MatchDay.OrderByDescending(o => o).FirstOrDefault();
                 if(MaxTimeMatchDay == MacthNow)
                 {
@@ -140,7 +150,9 @@ namespace PerformanceReportXLineNoti
             public bool IsNotifyLineWithImg { get; set; }
             public string LineNotiToken { get; set; }
             public List<string> PureArray { get; set; }
+            public bool IsDevelop { get; set; }
             
+
         }
     }
 }

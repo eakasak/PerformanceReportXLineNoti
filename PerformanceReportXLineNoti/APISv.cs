@@ -88,7 +88,7 @@ namespace PerformanceReportXLineNoti
 
         }
 
-        public object GetVolumes()
+        public PureValume GetVolumes()
         {
             var client = new RestClient("https://api.pure1.purestorage.com/api/1.0/volumes");
 
@@ -97,7 +97,11 @@ namespace PerformanceReportXLineNoti
             request.Method = Method.Get;
             request.AddHeader("Authorization", "Bearer " + Gettoken());
             var response = client.ExecuteAsync(request).Result;
-            return response;
+
+            PureValume myDeserializedClass = JsonConvert.DeserializeObject<PureValume>(response.Content);
+            var rs = new List<ValumeItem>();
+            rs = myDeserializedClass.items;
+            return myDeserializedClass;
 
         }
         public class AccessToken
@@ -143,5 +147,41 @@ namespace PerformanceReportXLineNoti
             public object continuation_token { get; set; }
             public List<PureItem> items { get; set; }
         }
+        public class ValumeArray
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string resource_type { get; set; }
+        }
+
+        public class Pod
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string resource_type { get; set; }
+        }
+
+        public class ValumeItem
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public List<ValumeArray> arrays { get; set; }
+            public object created { get; set; }
+            public bool destroyed { get; set; }
+            public bool eradicated { get; set; }
+            public Pod pod { get; set; }
+            public object provisioned { get; set; }
+            public string serial { get; set; }
+            public object source { get; set; }
+            public object _as_of { get; set; }
+        }
+
+        public class PureValume
+        {
+            public int total_item_count { get; set; }
+            public object continuation_token { get; set; }
+            public List<ValumeItem> items { get; set; }
+        }
+
     }
 }

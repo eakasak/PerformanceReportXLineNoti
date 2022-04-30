@@ -130,6 +130,10 @@ namespace PerformanceReportXLineNoti
                     Console.WriteLine(item.name);
                     Console.WriteLine(item.model);
                     Console.WriteLine(item.version);
+                    if (_SystemConfig.IsNotifyLine)
+                    {
+                        _APISv.NotiLine(item.name, _SystemConfig.LineNotiToken);
+                    }
                 }
               
                 var MaxTimeMatchDay = MatchDay.OrderByDescending(o => o).FirstOrDefault();

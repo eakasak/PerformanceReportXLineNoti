@@ -20,22 +20,23 @@ namespace PerformanceReportXLineNoti
         static DateTime curdate;
         static void Main(string[] args)
         {
+            SetTimer();
+            LoadConfig();
             LoadMatchDay();
         }
         private static void LoadMatchDay()
         {
-            SetTimer();
-            LoadConfig();
+       
             // curdate = DateTime.Now.AddHours(35).AddMinutes(30);
             curdate = DateTime.Now;
             var curmacth = DateTime.Now;
           
             var rs = _APISv.GetFixtures();
 
-            var rs2 = rs.Where(a => Convert.ToDateTime(a.kickoff_time).Date == Convert.ToDateTime(curdate).Date).ToList();
+            var rs1 = rs.Where(a => Convert.ToDateTime(a.kickoff_time) >= Convert.ToDateTime(curdate.AddHours(-1))).FirstOrDefault();
+            var rs2 = rs.Where(a => Convert.ToDateTime(a.kickoff_time) == Convert.ToDateTime(rs1.kickoff_time)).ToList();
 
-            //var c = Convert.ToDateTime(rs2[0].kickoff_time);
-
+            MatchDay = new List<DateTime>();
             foreach (var item in rs2)
             {
                 var d = Convert.ToDateTime(item.kickoff_time);
@@ -127,7 +128,17 @@ namespace PerformanceReportXLineNoti
                 //var SelectValume = Valumes.items;
                 if (_SystemConfig.IsNotifyLine)
                 {
-                    _APISv.NotiLine("Report : " + curdate.ToString(), _SystemConfig.LineNotiToken);
+                    var status = "Report: " + curdate.ToString();
+                    status += Environment.NewLine;
+                    status = "Latency (ms) : Reads : Writes";
+                    status += Environment.NewLine;
+                    status = "IOPS (K) : Reads : Writes";
+                    status += Environment.NewLine;
+                    status = "Bandwidth (MB/s) : Reads : Writes";
+                    status += Environment.NewLine;
+                    status = "Latency (%) : Value ";
+                    status += Environment.NewLine;
+                    _APISv.NotiLine(status, _SystemConfig.LineNotiToken);
                 }
                 foreach (var item in SelectArrays)
                 {

@@ -90,7 +90,7 @@ namespace PerformanceReportXLineNoti
 
         public MetricRoot GetMetricsHistory(int secondsSinceEpoch, int endsecondsSinceEpoch)
         {
-            var client = new RestClient("https://api.pure1.purestorage.com/api/1.latest/metrics/history?names='array_write_latency_us','array_read_latency_us','array_write_iops','array_read_iops','array_read_bandwidth'&aggregation='max'&resolution=30000&start_time='"+ secondsSinceEpoch + "'&resource_names='D2P-CLMVMSCTL02','D2P-CLMVMSCTL03','D2P-AAAVMSTOR01'&end_time='" + endsecondsSinceEpoch + "'");
+            var client = new RestClient("https://api.pure1.purestorage.com/api/1.latest/metrics/history?names='array_write_latency_us','array_read_latency_us','array_write_iops','array_read_iops','array_read_bandwidth'&aggregation='max'&resolution=30000&start_time='"+ secondsSinceEpoch + "'&resource_names='D2P-CLMVMSCTL01','D2P-CLMVMSCTL02','D2P-CLMVMSCTL03'&end_time='" + endsecondsSinceEpoch + "'");
             var request = new RestRequest();
             request.RequestFormat = DataFormat.Json;
             request.Method = Method.Get;
@@ -107,7 +107,7 @@ namespace PerformanceReportXLineNoti
 
         public MetricRoot GetMetricsBandwidth(int secondsSinceEpoch, int endsecondsSinceEpoch)
         {
-            var client = new RestClient("https://api.pure1.purestorage.com/api/1.latest/metrics/history?names='array_read_bandwidth','array_write_bandwidth'&aggregation='max'&resolution=30000&start_time='" + secondsSinceEpoch + "'&resource_names='D2P-CLMVMSCTL02','D2P-CLMVMSCTL03','D2P-AAAVMSTOR01'&end_time='" + endsecondsSinceEpoch + "'");
+            var client = new RestClient("https://api.pure1.purestorage.com/api/1.latest/metrics/history?names='array_read_bandwidth','array_write_bandwidth'&aggregation='max'&resolution=30000&start_time='" + secondsSinceEpoch + "'&resource_names='D2P-CLMVMSCTL01','D2P-CLMVMSCTL02','D2P-CLMVMSCTL03'&end_time='" + endsecondsSinceEpoch + "'");
             var request = new RestRequest();
             request.RequestFormat = DataFormat.Json;
             request.Method = Method.Get;
@@ -124,7 +124,7 @@ namespace PerformanceReportXLineNoti
 
         public MetricRoot GetMetricsTotalLoad(int secondsSinceEpoch, int endsecondsSinceEpoch)
         {
-            var client = new RestClient("https://api.pure1.purestorage.com/api/1.latest/metrics/history?names='array_total_load'&aggregation='max'&resolution=86400000&start_time='" + secondsSinceEpoch + "'&resource_names='D2P-CLMVMSCTL02','D2P-CLMVMSCTL03','D2P-AAAVMSTOR01'&end_time='" + endsecondsSinceEpoch + "'");
+            var client = new RestClient("https://api.pure1.purestorage.com/api/1.latest/metrics/history?names='array_total_load'&aggregation='max'&resolution=86400000&start_time='" + secondsSinceEpoch + "'&resource_names='D2P-CLMVMSCTL01','D2P-CLMVMSCTL02','D2P-CLMVMSCTL03'&end_time='" + endsecondsSinceEpoch + "'");
             var request = new RestRequest();
             request.RequestFormat = DataFormat.Json;
             request.Method = Method.Get;

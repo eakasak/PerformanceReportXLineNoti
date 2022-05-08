@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Timers;
@@ -115,7 +116,7 @@ namespace PerformanceReportXLineNoti
 
             if (MatchDay.Contains(MacthNow))
             {
-                var bftime = MacthNow.AddHours(-1);
+                var bftime = MacthNow.AddHours(-2);
                 TimeSpan t = bftime.ToUniversalTime() - new DateTime(1970, 1, 1);
                 int secondsSinceEpoch = (int)t.TotalSeconds;
                 
@@ -153,13 +154,13 @@ namespace PerformanceReportXLineNoti
                     {
                         if (Metric.resources.FirstOrDefault().name == item)
                         {
-                            if (Metric.name == "array_read_latency_us")
+                            if (Metric.name == "array_read_latency_us" && Metric.data.Count > 0)
                                 LatencyReads = Metric.data.LastOrDefault().LastOrDefault();
-                            if (Metric.name == "array_write_latency_us")
+                            if (Metric.name == "array_write_latency_us" && Metric.data.Count > 0)
                                 LatencyWrites = Metric.data.LastOrDefault().LastOrDefault();
-                            if (Metric.name == "array_read_iops")
+                            if (Metric.name == "array_read_iops" && Metric.data.Count > 0)
                                 IopsReads = Metric.data.LastOrDefault().LastOrDefault();
-                            if (Metric.name == "array_write_iops")
+                            if (Metric.name == "array_write_iops" && Metric.data.Count>0)
                                 IopsWrites = Metric.data.LastOrDefault().LastOrDefault();                           
                         }
                     }
@@ -168,9 +169,9 @@ namespace PerformanceReportXLineNoti
                     {
                         if (Bandwidth.resources.FirstOrDefault().name == item)
                         {
-                            if (Bandwidth.name == "array_read_bandwidth")
+                            if (Bandwidth.name == "array_read_bandwidth" && Bandwidth.data.Count > 0)
                                 BandwidthReads = Bandwidth.data.LastOrDefault().LastOrDefault();
-                            if (Bandwidth.name == "array_write_bandwidth")
+                            if (Bandwidth.name == "array_write_bandwidth" && Bandwidth.data.Count > 0)
                                 BandwidthWrites = Bandwidth.data.LastOrDefault().LastOrDefault();
                         }
                         
@@ -180,7 +181,7 @@ namespace PerformanceReportXLineNoti
                     {
                         if (Total_load.resources.FirstOrDefault().name == item)
                         {
-                            if (Total_load.name == "array_total_load")
+                            if (Total_load.name == "array_total_load" && Total_load.data.Count > 0)
                                 TotalLoad = Total_load.data.LastOrDefault().LastOrDefault();
                         }
 
@@ -193,13 +194,13 @@ namespace PerformanceReportXLineNoti
                         status += Environment.NewLine;
                         status += "Array Name = " + item;
                         status += Environment.NewLine;
-                        status += "Latency (ms) : Reads : Writes " + LatencyReads + " : " + LatencyWrites;
+                        status += "Latency (ms) : Reads : Writes " + (LatencyReads / 1000).ToString("0.00", CultureInfo.InvariantCulture) + " : " + (LatencyWrites / 1000).ToString("0.00", CultureInfo.InvariantCulture);
                         status += Environment.NewLine;
-                        status += "IOPS (K) : Reads : Writes " + IopsReads + " : " + IopsWrites;
+                        status += "IOPS (K) : Reads : Writes " + (IopsReads / 1000).ToString("0.00", CultureInfo.InvariantCulture) + " : " + (IopsWrites / 1000).ToString("0.00", CultureInfo.InvariantCulture);
                         status += Environment.NewLine;
-                        status += "Bandwidth (MB/s) : Reads : Writes " + BandwidthReads + " : " + BandwidthWrites;
+                        status += "Bandwidth (MB/s) : Reads : Writes " + (BandwidthReads / 1000000).ToString("0.00", CultureInfo.InvariantCulture) + " : " + (BandwidthWrites / 1000000).ToString("0.00", CultureInfo.InvariantCulture);
                         status += Environment.NewLine;
-                        status += "Latency (%) : Value : " + TotalLoad * 100;
+                        status += "Load (%) : Value : " + (TotalLoad * 100).ToString("00", CultureInfo.InvariantCulture);
                         status += Environment.NewLine;
                         _APISv.NotiLine(status, _SystemConfig.LineNotiToken);
                     }

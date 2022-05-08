@@ -115,7 +115,7 @@ namespace PerformanceReportXLineNoti
 
             if (MatchDay.Contains(MacthNow))
             {
-                var bftime = MatchDay.Where(a => a < MacthNow).Max(m => m);
+                var bftime = MacthNow.AddMinutes(-5);
                 TimeSpan t = bftime.ToUniversalTime() - new DateTime(1970, 1, 1);
                 int secondsSinceEpoch = (int)t.TotalSeconds;
                 

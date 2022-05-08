@@ -186,7 +186,7 @@ namespace PerformanceReportXLineNoti
 
                     }
 
-                    if (!_SystemConfig.IsNotifyLine)
+                    if (_SystemConfig.IsNotifyLine)
                     {
                         var status = Environment.NewLine;
                         status += "Report: " + MacthNow.ToString();

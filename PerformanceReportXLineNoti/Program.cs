@@ -115,7 +115,7 @@ namespace PerformanceReportXLineNoti
 
             if (MatchDay.Contains(MacthNow))
             {
-                var bftime = MacthNow.AddMinutes(-5);
+                var bftime = MacthNow.AddHours(-1);
                 TimeSpan t = bftime.ToUniversalTime() - new DateTime(1970, 1, 1);
                 int secondsSinceEpoch = (int)t.TotalSeconds;
                 
@@ -199,7 +199,7 @@ namespace PerformanceReportXLineNoti
                         status += Environment.NewLine;
                         status += "Bandwidth (MB/s) : Reads : Writes " + BandwidthReads + " : " + BandwidthWrites;
                         status += Environment.NewLine;
-                        status += "Latency (%) : Value : " + TotalLoad;
+                        status += "Latency (%) : Value : " + TotalLoad * 100;
                         status += Environment.NewLine;
                         _APISv.NotiLine(status, _SystemConfig.LineNotiToken);
                     }

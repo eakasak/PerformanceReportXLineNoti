@@ -88,18 +88,52 @@ namespace PerformanceReportXLineNoti
 
         }
 
-        public PureValume GetVolumes()
+        public MetricRoot GetMetricsHistory(int secondsSinceEpoch, int endsecondsSinceEpoch)
         {
-            var client = new RestClient("https://api.pure1.purestorage.com/api/1.0/volumes");
-
+            var client = new RestClient("https://api.pure1.purestorage.com/api/1.latest/metrics/history?names='array_write_latency_us','array_read_latency_us','array_write_iops','array_read_iops','array_read_bandwidth'&aggregation='max'&resolution=30000&start_time='"+ secondsSinceEpoch + "'&resource_names='D2P-CLMVMSCTL02','D2P-CLMVMSCTL03','D2P-AAAVMSTOR01'&end_time='" + endsecondsSinceEpoch + "'");
             var request = new RestRequest();
             request.RequestFormat = DataFormat.Json;
             request.Method = Method.Get;
             request.AddHeader("Authorization", "Bearer " + Gettoken());
+            var body = @"";
+            request.AddParameter("text/plain", body, ParameterType.RequestBody);
             var response = client.ExecuteAsync(request).Result;
+            MetricRoot myDeserializedClass = JsonConvert.DeserializeObject<MetricRoot>(response.Content);
+            var rs = new List<MetricsItem>();
+            rs = myDeserializedClass.items;
+            return myDeserializedClass;
 
-            PureValume myDeserializedClass = JsonConvert.DeserializeObject<PureValume>(response.Content);
-            var rs = new List<ValumeItem>();
+        }
+
+        public MetricRoot GetMetricsBandwidth(int secondsSinceEpoch, int endsecondsSinceEpoch)
+        {
+            var client = new RestClient("https://api.pure1.purestorage.com/api/1.latest/metrics/history?names='array_read_bandwidth','array_write_bandwidth'&aggregation='max'&resolution=30000&start_time='" + secondsSinceEpoch + "'&resource_names='D2P-CLMVMSCTL02','D2P-CLMVMSCTL03','D2P-AAAVMSTOR01'&end_time='" + endsecondsSinceEpoch + "'");
+            var request = new RestRequest();
+            request.RequestFormat = DataFormat.Json;
+            request.Method = Method.Get;
+            request.AddHeader("Authorization", "Bearer " + Gettoken());
+            var body = @"";
+            request.AddParameter("text/plain", body, ParameterType.RequestBody);
+            var response = client.ExecuteAsync(request).Result;
+            MetricRoot myDeserializedClass = JsonConvert.DeserializeObject<MetricRoot>(response.Content);
+            var rs = new List<MetricsItem>();
+            rs = myDeserializedClass.items;
+            return myDeserializedClass;
+
+        }
+
+        public MetricRoot GetMetricsTotalLoad(int secondsSinceEpoch, int endsecondsSinceEpoch)
+        {
+            var client = new RestClient("https://api.pure1.purestorage.com/api/1.latest/metrics/history?names='array_total_load'&aggregation='max'&resolution=86400000&start_time='" + secondsSinceEpoch + "'&resource_names='D2P-CLMVMSCTL02','D2P-CLMVMSCTL03','D2P-AAAVMSTOR01'&end_time='" + endsecondsSinceEpoch + "'");
+            var request = new RestRequest();
+            request.RequestFormat = DataFormat.Json;
+            request.Method = Method.Get;
+            request.AddHeader("Authorization", "Bearer " + Gettoken());
+            var body = @"";
+            request.AddParameter("text/plain", body, ParameterType.RequestBody);
+            var response = client.ExecuteAsync(request).Result;
+            MetricRoot myDeserializedClass = JsonConvert.DeserializeObject<MetricRoot>(response.Content);
+            var rs = new List<MetricsItem>();
             rs = myDeserializedClass.items;
             return myDeserializedClass;
 
@@ -182,6 +216,36 @@ namespace PerformanceReportXLineNoti
             public object continuation_token { get; set; }
             public List<ValumeItem> items { get; set; }
         }
+
+        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+        public class Resource
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string resource_type { get; set; }
+            public string fqdn { get; set; }
+        }
+
+        public class MetricsItem
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string aggregation { get; set; }
+            public List<List<double>> data { get; set; }
+            public int resolution { get; set; }
+            public List<Resource> resources { get; set; }
+            public string unit { get; set; }
+            public object _as_of { get; set; }
+        }
+
+        public class MetricRoot
+        {
+            public int total_item_count { get; set; }
+            public object continuation_token { get; set; }
+            public List<MetricsItem> items { get; set; }
+        }
+
+
 
     }
 }

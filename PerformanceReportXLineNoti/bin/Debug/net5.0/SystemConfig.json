@@ -3,9 +3,9 @@
   "EveryBeginKickOff": 5,
   "OnKickOff": 15,
   "AfterMatchStop": 5,
-  "IsNotifyLine": true,
+  "IsNotifyLine": false,
   "IsNotifyLineWithImg": true,
-  "LineNotiToken": "whVvZh1oelDBO1TpGlPw0rhyorbZZpehmFIH7EDO5I6",
+  "LineNotiToken": "2SkCQsMhBftwXDtQXbtmB8w2PauLnAb2X2JuraKK4GF",
   "PureArray": [ "D2P-AAAVMSTOR01", "D2P-CLMVMSCTL01", "D2P-CLMVMSCTL02", "D2P-CLMVMSCTL03" ],
-  "IsDevelop": false
+  "IsDevelop": true
 }

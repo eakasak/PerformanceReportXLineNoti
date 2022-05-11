@@ -21,18 +21,9 @@ namespace PerformanceReportXLineNoti
         static DateTime curdate;
         static void Main(string[] args)
         {
-            var testmsg = "";
-            testmsg = "Apitoken => " + _APISv.Apitoken();
-            Console.WriteLine(testmsg);
-            _APISv.NotiLine(testmsg, _SystemConfig.LineNotiToken);
-            _APISv.APISession();
-           var test =   _APISv.GetArrayMonitor();
-            testmsg += test.input_per_sec.ToString();
-            _APISv.NotiLine(testmsg, _SystemConfig.LineNotiToken);
-            Console.WriteLine(testmsg);
-            //SetTimer();
-            //LoadConfig();
-            //LoadMatchDay();
+            SetTimer();
+            LoadConfig();
+            LoadMatchDay();
         }
         private static void LoadMatchDay()
         {
@@ -128,7 +119,7 @@ namespace PerformanceReportXLineNoti
                 var bftime = MacthNow.AddHours(-2);
                 TimeSpan t = bftime.ToUniversalTime() - new DateTime(1970, 1, 1);
                 int secondsSinceEpoch = (int)t.TotalSeconds;
-                
+
                 TimeSpan t2 = MacthNow.ToUniversalTime() - new DateTime(1970, 1, 1);
                 int endsecondsSinceEpoch = (int)t2.TotalSeconds;
 
@@ -138,15 +129,16 @@ namespace PerformanceReportXLineNoti
                 aTimer.AutoReset = true;
                 aTimer.Enabled = true;
                 aTimer.Start();
-    
+
                 var Arrays = _APISv.GetArrays();
                 var SelectArrays = Arrays.items.Where(a => _SystemConfig.PureArray.Contains(a.name));
-                Console.WriteLine("Report : " + curdate.ToString() );
+                Console.WriteLine("Report : " + curdate.ToString());
                 //var Valumes = _APISv.GetVolumes();
                 //var SelectValume = Valumes.items;
-                var Metrics = _APISv.GetMetricsHistory(secondsSinceEpoch, endsecondsSinceEpoch);           
-                var Bandwidths = _APISv.GetMetricsBandwidth(secondsSinceEpoch, endsecondsSinceEpoch);
-                var Total_loads = _APISv.GetMetricsTotalLoad(secondsSinceEpoch, endsecondsSinceEpoch);
+                //var Metrics = _APISv.GetMetricsHistory(secondsSinceEpoch, endsecondsSinceEpoch);           
+                //var Bandwidths = _APISv.GetMetricsBandwidth(secondsSinceEpoch, endsecondsSinceEpoch);
+                //var Total_loads = _APISv.GetMetricsTotalLoad(secondsSinceEpoch, endsecondsSinceEpoch);
+                var ArrayMonitor = _APISv.GetArrayMonitor();
 
                 foreach (var item in _SystemConfig.PureArray)
                 {
@@ -159,42 +151,51 @@ namespace PerformanceReportXLineNoti
                     double BandwidthWrites = 0;
                     double TotalLoad = 0;
 
-                    foreach (var Metric in Metrics.items)
-                    {
-                        if (Metric.resources.FirstOrDefault().name == item)
-                        {
-                            if (Metric.name == "array_read_latency_us" && Metric.data.Count > 0)
-                                LatencyReads = Metric.data.LastOrDefault().LastOrDefault();
-                            if (Metric.name == "array_write_latency_us" && Metric.data.Count > 0)
-                                LatencyWrites = Metric.data.LastOrDefault().LastOrDefault();
-                            if (Metric.name == "array_read_iops" && Metric.data.Count > 0)
-                                IopsReads = Metric.data.LastOrDefault().LastOrDefault();
-                            if (Metric.name == "array_write_iops" && Metric.data.Count>0)
-                                IopsWrites = Metric.data.LastOrDefault().LastOrDefault();                           
-                        }
-                    }
 
-                    foreach (var Bandwidth in Bandwidths.items)
-                    {
-                        if (Bandwidth.resources.FirstOrDefault().name == item)
-                        {
-                            if (Bandwidth.name == "array_read_bandwidth" && Bandwidth.data.Count > 0)
-                                BandwidthReads = Bandwidth.data.LastOrDefault().LastOrDefault();
-                            if (Bandwidth.name == "array_write_bandwidth" && Bandwidth.data.Count > 0)
-                                BandwidthWrites = Bandwidth.data.LastOrDefault().LastOrDefault();
-                        }
-                        
-                    }
+                    LatencyReads = ArrayMonitor.reads_per_sec;
+                    LatencyWrites = ArrayMonitor.writes_per_sec;
+                    IopsReads = ArrayMonitor.usec_per_read_op;
+                    IopsWrites = ArrayMonitor.usec_per_write_op;
+                    BandwidthReads = ArrayMonitor.input_per_sec;
+                    BandwidthWrites = ArrayMonitor.output_per_sec;
+                    TotalLoad = 0;
 
-                    foreach (var Total_load in Total_loads.items)
-                    {
-                        if (Total_load.resources.FirstOrDefault().name == item)
-                        {
-                            if (Total_load.name == "array_total_load" && Total_load.data.Count > 0)
-                                TotalLoad = Total_load.data.LastOrDefault().LastOrDefault();
-                        }
+                    //foreach (var Metric in Metrics.items)
+                    //{
+                    //if (Metric.resources.FirstOrDefault().name == item)
+                    //{
+                    //    if (Metric.name == "array_read_latency_us" && Metric.data.Count > 0)
+                    //        LatencyReads = Metric.data.LastOrDefault().LastOrDefault();
+                    //    if (Metric.name == "array_write_latency_us" && Metric.data.Count > 0)
+                    //        LatencyWrites = Metric.data.LastOrDefault().LastOrDefault();
+                    //    if (Metric.name == "array_read_iops" && Metric.data.Count > 0)
+                    //        IopsReads = Metric.data.LastOrDefault().LastOrDefault();
+                    //    if (Metric.name == "array_write_iops" && Metric.data.Count>0)
+                    //        IopsWrites = Metric.data.LastOrDefault().LastOrDefault();                           
+                    //}
+                    //}
 
-                    }
+                    //foreach (var Bandwidth in Bandwidths.items)
+                    //{
+                    //if (Bandwidth.resources.FirstOrDefault().name == item)
+                    //{
+                    //    if (Bandwidth.name == "array_read_bandwidth" && Bandwidth.data.Count > 0)
+                    //        BandwidthReads = Bandwidth.data.LastOrDefault().LastOrDefault();
+                    //    if (Bandwidth.name == "array_write_bandwidth" && Bandwidth.data.Count > 0)
+                    //        BandwidthWrites = Bandwidth.data.LastOrDefault().LastOrDefault();
+                    //}
+
+                    //}
+
+                    //foreach (var Total_load in Total_loads.items)
+                    //{
+                    //    if (Total_load.resources.FirstOrDefault().name == item)
+                    //    {
+                    //        if (Total_load.name == "array_total_load" && Total_load.data.Count > 0)
+                    //            TotalLoad = Total_load.data.LastOrDefault().LastOrDefault();
+                    //    }
+
+                    //}
 
                     if (_SystemConfig.IsNotifyLine)
                     {
@@ -203,28 +204,28 @@ namespace PerformanceReportXLineNoti
                         status += Environment.NewLine;
                         status += "Array Name = " + item;
                         status += Environment.NewLine;
-                        status += "Latency (ms) : Reads : Writes " + (LatencyReads / 1000).ToString("0.00", CultureInfo.InvariantCulture) + " : " + (LatencyWrites / 1000).ToString("0.00", CultureInfo.InvariantCulture);
+                        status += "Latency (ms) : Reads / Writes " + (LatencyReads / 1000).ToString("0.00", CultureInfo.InvariantCulture) + " : " + (LatencyWrites / 1000).ToString("0.00", CultureInfo.InvariantCulture);
                         status += Environment.NewLine;
-                        status += "IOPS (K) : Reads : Writes " + (IopsReads / 1000).ToString("0.00", CultureInfo.InvariantCulture) + " : " + (IopsWrites / 1000).ToString("0.00", CultureInfo.InvariantCulture);
+                        status += "IOPS (K) : Reads / Writes " + (IopsReads / 1000).ToString("0.00", CultureInfo.InvariantCulture) + " : " + (IopsWrites / 1000).ToString("0.00", CultureInfo.InvariantCulture);
                         status += Environment.NewLine;
-                        status += "Bandwidth (MB/s) : Reads : Writes " + (BandwidthReads / 1000000).ToString("0.00", CultureInfo.InvariantCulture) + " : " + (BandwidthWrites / 1000000).ToString("0.00", CultureInfo.InvariantCulture);
+                        status += "Bandwidth (MB/s) / Reads : Writes " + (BandwidthReads / 1000000).ToString("0.00", CultureInfo.InvariantCulture) + " : " + (BandwidthWrites / 1000000).ToString("0.00", CultureInfo.InvariantCulture);
                         status += Environment.NewLine;
-                        status += "Load (%) : Value : " + (TotalLoad * 100).ToString("00", CultureInfo.InvariantCulture);
-                        status += Environment.NewLine;
+                        //status += "Load (%) : Value : " + (TotalLoad * 100).ToString("00", CultureInfo.InvariantCulture);
+                        //status += Environment.NewLine;
                         _APISv.NotiLine(status, _SystemConfig.LineNotiToken);
                     }
-                }     
-                
+                }
+
                 foreach (var item in SelectArrays)
                 {
                     Console.WriteLine(item.name);
                     Console.WriteLine(item.model);
                     Console.WriteLine(item.version);
-                  
+
                 }
-              
+
                 var MaxTimeMatchDay = MatchDay.OrderByDescending(o => o).FirstOrDefault();
-                if(MaxTimeMatchDay == MacthNow)
+                if (MaxTimeMatchDay == MacthNow)
                 {
                     Console.WriteLine("End Match");
                     LoadMatchDay();

@@ -23,11 +23,13 @@ namespace PerformanceReportXLineNoti
         {
             var testmsg = "";
             testmsg = "Apitoken => " + _APISv.Apitoken();
+            Console.WriteLine(testmsg);
             _APISv.NotiLine(testmsg, _SystemConfig.LineNotiToken);
             _APISv.APISession();
            var test =   _APISv.GetArrayMonitor();
             testmsg += test.input_per_sec.ToString();
             _APISv.NotiLine(testmsg, _SystemConfig.LineNotiToken);
+            Console.WriteLine(testmsg);
             //SetTimer();
             //LoadConfig();
             //LoadMatchDay();

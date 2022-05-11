@@ -2,6 +2,8 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using static PerformanceReportXLineNoti.Program;
 
@@ -138,6 +140,59 @@ namespace PerformanceReportXLineNoti
             return myDeserializedClass;
 
         }
+        public string Apitoken()
+        {
+           
+            var AuthData = new AuthData();
+            AuthData.username = "testapi";
+            AuthData.password = "tesT@pi12345";
+           var client = new RestClient("https://10.202.2.15/api/1.19/auth/apitoken");
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            //var restClient = new RestClient(baseUrl);
+            //restClient.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+            var request = new RestRequest();
+            request.RequestFormat = DataFormat.Json;
+            request.Method = Method.Post;
+            request.AddHeader("Accept", "application/json");
+            request.AddJsonBody(AuthData);
+
+            var response = client.ExecuteAsync(request).Result;
+            Console.WriteLine(response.Content);
+            return response.Content;
+        }
+        public object APISession()
+        {
+            var AuthData = new AuthData();
+           var _token =  Apitoken();
+
+            var client = new RestClient("https://10.202.2.15/api/1.19/auth/session");
+            var request = new RestRequest();
+            request.RequestFormat = DataFormat.Json;
+            request.Method = Method.Post;
+            request.AddHeader("Accept", "application/json");
+            request.AddJsonBody(new
+            {
+                UserName = _token
+            });
+
+            var response = client.ExecuteAsync(request).Result;
+            Console.WriteLine(response.Content);
+            return response.Content;
+        }
+        public Monitor GetArrayMonitor()
+        {
+            var client = new RestClient("https://10.202.2.15/api/1.19/array?action=monitor");
+            var request = new RestRequest();
+            request.RequestFormat = DataFormat.Json;
+            request.Method = Method.Get;
+            var response = client.ExecuteAsync(request).Result;
+            Console.WriteLine(response.Content);
+            Monitor myDeserializedClass = JsonConvert.DeserializeObject<Monitor>(response.Content);
+            //var rs = new List<MetricsItem>();
+            //rs = myDeserializedClass.items;
+            return myDeserializedClass;
+        }
         public class AccessToken
         {
             public string access_token { get; set; }
@@ -245,6 +300,25 @@ namespace PerformanceReportXLineNoti
             public List<MetricsItem> items { get; set; }
         }
 
+        public class AuthData
+        {
+            public string username { get; set; }
+            public string password { get; set; }
+            //public string apitoken { get; set; }
+        }
+
+        public class Monitor
+        {
+            public int writes_per_sec { get; set; }
+            public int local_queue_usec_per_op { get; set; }
+            public int usec_per_write_op { get; set; }
+            public int output_per_sec { get; set; }
+            public int reads_per_sec { get; set; }
+            public int input_per_sec { get; set; }
+            public DateTime time { get; set; }
+            public int usec_per_read_op { get; set; }
+            public object queue_depth { get; set; }
+        }
 
 
     }

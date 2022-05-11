@@ -20,10 +20,17 @@ namespace PerformanceReportXLineNoti
         static List<DateTime> MatchDay = new List<DateTime>();
         static DateTime curdate;
         static void Main(string[] args)
-        {           
-            SetTimer();
-            LoadConfig();
-            LoadMatchDay();
+        {
+            var testmsg = "";
+            testmsg = "Apitoken => " + _APISv.Apitoken();
+            _APISv.NotiLine(testmsg, _SystemConfig.LineNotiToken);
+            _APISv.APISession();
+           var test =   _APISv.GetArrayMonitor();
+            testmsg += test.input_per_sec.ToString();
+            _APISv.NotiLine(testmsg, _SystemConfig.LineNotiToken);
+            //SetTimer();
+            //LoadConfig();
+            //LoadMatchDay();
         }
         private static void LoadMatchDay()
         {

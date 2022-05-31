@@ -6,6 +6,94 @@
   "IsNotifyLine": true,
   "IsNotifyLineWithImg": true,
   "LineNotiToken": "whVvZh1oelDBO1TpGlPw0rhyorbZZpehmFIH7EDO5I6",
-  "PureArray": [ "D2P-VMMVMSCTL-01"],
+  "PureArrayConfig": [
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D2P-AAAVMSTOR01",
+      "ArrayIP": "10.200.37.100",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D2P-CLMVMSCTL01",
+      "ArrayIP": "10.200.85.52",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D2P-CLMVMSCTL02",
+      "ArrayIP": "10.200.85.55",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D2P-CLMVMSCTL03",
+      "ArrayIP": "10.200.85.58",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D2P-CLMVMSCTL03",
+      "ArrayIP": "10.200.85.58",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D2P-TRIDCOMVMSCT1VP",
+      "ArrayIP": "10.200.95.32",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D2P-TRUEIDVMSCT1VP",
+      "ArrayIP": "10.10.15.59",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D3P-TRUIDVMSCT1VP",
+      "ArrayIP": "10.220.211.123",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D3P-TRUIDVMSCT1VP",
+      "ArrayIP": "10.220.211.123",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D3P-TYCLMVMSCT1VP",
+      "ArrayIP": "10.220.211.104",
+      "ArrayAPIVer": "1.17",
+      "IsMonitor": true
+    },
+    {
+      "Username": "testapi",
+      "Password": "tesT@pi12345",
+      "ArrayName": "D2P-VMMVMSCTL-01",
+      "ArrayIP": "10.202.2.15",
+      "ArrayAPIVer": "1.19"
+    }
+  ],
   "IsDevelop": false
 }

@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Linq;
+using static PerformanceReportXLineNoti.Program;
 
 namespace PerformanceReportXLineNoti
 {
@@ -140,17 +141,17 @@ namespace PerformanceReportXLineNoti
             return myDeserializedClass;
 
         }
-        public string Apitoken()
+        public string Apitoken(PureArrayConfig pureArrayConfig)
         {      
             var AuthData = new AuthData();
-            AuthData.username = "testapi";
-            AuthData.password = "tesT@pi12345";
+            AuthData.username = pureArrayConfig.Username;
+            AuthData.password = pureArrayConfig.Password;
 
             var httpClientHandler = new HttpClientHandler();
             httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
 
             var client = new RestClient(httpClientHandler);
-            var request = new RestRequest("https://10.202.2.15/api/1.19/auth/apitoken");
+            var request = new RestRequest(string.Format("https://{0}/api/{1}/auth/apitoken", pureArrayConfig.ArrayIP, pureArrayConfig.ArrayAPIVer));
             request.Method = Method.Post;
 
             request.AddHeader("Content-Type", "application/json");
@@ -161,15 +162,15 @@ namespace PerformanceReportXLineNoti
 
             return _Token.api_token;
         }
-        public string APISession()
+        public string APISession(PureArrayConfig pureArrayConfig)
         {
          
-            var _token =  Apitoken();
+            var _token =  Apitoken(pureArrayConfig);
             var httpClientHandler = new HttpClientHandler();
             httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
 
             var client = new RestClient(httpClientHandler);
-            var request = new RestRequest("https://10.202.2.15/api/1.19/auth/session");
+            var request = new RestRequest(string.Format("https://{0}/api/{1}/auth/session", pureArrayConfig.ArrayIP, pureArrayConfig.ArrayAPIVer));
             request.Method = Method.Post;
             request.AddHeader("Accept", "application/json");
             request.AddJsonBody(new
@@ -185,16 +186,16 @@ namespace PerformanceReportXLineNoti
            // Console.WriteLine(cookies);
             return cookies.ToString();
         }
-        public Monitor GetArrayMonitor()
+        public Monitor GetArrayMonitor(PureArrayConfig pureArrayConfig)
         {
             var httpClientHandler = new HttpClientHandler();
             httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
 
             var client = new RestClient(httpClientHandler);
-            var request = new RestRequest("https://10.202.2.15/api/1.19/array?action=monitor");
+            var request = new RestRequest(string.Format("https://{0}/api/{1}/array?action=monitor", pureArrayConfig.ArrayIP, pureArrayConfig.ArrayAPIVer));
             request.RequestFormat = DataFormat.Json;
             request.Method = Method.Get;
-            request.AddHeader("Cookie", APISession());
+            request.AddHeader("Cookie", APISession(pureArrayConfig));
             var response = client.ExecuteAsync(request).Result;
             //Console.WriteLine(response.Content);
             var myDeserializedClass = JsonConvert.DeserializeObject<List<Monitor>>(response.Content);
@@ -318,14 +319,14 @@ namespace PerformanceReportXLineNoti
 
         public class Monitor
         {
-            public int writes_per_sec { get; set; }
-            public int local_queue_usec_per_op { get; set; }
-            public int usec_per_write_op { get; set; }
-            public int output_per_sec { get; set; }
-            public int reads_per_sec { get; set; }
-            public int input_per_sec { get; set; }
+            public double writes_per_sec { get; set; }
+            public double local_queue_usec_per_op { get; set; }
+            public double usec_per_write_op { get; set; }
+            public double output_per_sec { get; set; }
+            public double reads_per_sec { get; set; }
+            public double input_per_sec { get; set; }
             public DateTime time { get; set; }
-            public int usec_per_read_op { get; set; }
+            public double usec_per_read_op { get; set; }
             public object queue_depth { get; set; }
         }
      
@@ -333,7 +334,30 @@ namespace PerformanceReportXLineNoti
         {
             public string api_token { get; set; }
         }
+        public class SystemConfig
+        {
+            public int BeginKickOff { get; set; }
+            public int EveryBeginKickOff { get; set; }
+            public int OnKickOff { get; set; }
+            public int AfterMatchStop { get; set; }
+            public bool IsNotifyLine { get; set; }
+            public bool IsNotifyLineWithImg { get; set; }
+            public string LineNotiToken { get; set; }
+            public List<PureArrayConfig> PureArrayConfig { get; set; }
+            public bool IsDevelop { get; set; }
 
+
+        }
+        public class PureArrayConfig
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+            public string ArrayName { get; set; }
+            public string ArrayIP { get; set; }
+            public string ArrayAPIVer { get; set; }
+            public bool IsMonitor { get; set; }
+
+        }
 
     }
 }
